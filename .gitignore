@@ -2,3 +2,15 @@
 /terminatorcrm/db.sqlite3
 /venv/*
 *.pyc
+terminatorcrm/crm/__pycache__/models.cpython-39.pyc
+terminatorcrm/crm/__pycache__/__init__.cpython-39.pyc
+terminatorcrm/crm/__pycache__/apps.cpython-39.pyc
+terminatorcrm/crm/__pycache__/models.cpython-39.pyc
+terminatorcrm/crm/__pycache__/serializers.cpython-39.pyc
+terminatorcrm/crm/__pycache__/views.cpython-39.pyc
+terminatorcrm/crm/migrations/__pycache__/0001_initial.cpython-39.pyc
+terminatorcrm/crm/migrations/__pycache__/__init__.cpython-39.pyc
+terminatorcrm/terminatorcrm/__pycache__/__init__.cpython-39.pyc
+terminatorcrm/terminatorcrm/__pycache__/settings.cpython-39.pyc
+terminatorcrm/terminatorcrm/__pycache__/urls.cpython-39.pyc
+terminatorcrm/terminatorcrm/__pycache__/wsgi.cpython-39.pyc
