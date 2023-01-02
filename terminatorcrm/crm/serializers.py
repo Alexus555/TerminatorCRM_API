@@ -127,3 +127,87 @@ class LeadSerializer(serializers.ModelSerializer):
 
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
+
+
+class ProjectStreamStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lead
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+
+class ProjectStreamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lead
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+
+class ProjectReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lead
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+
+class ImpStageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lead
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+
+class ProjectReportImpStageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lead
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+
+class ProjectStreamImpStageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lead
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+
+class PMStageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lead
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+
+class PMStepSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lead
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+
+class ProjectPMStepSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lead
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+
+

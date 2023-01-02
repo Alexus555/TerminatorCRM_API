@@ -76,4 +76,47 @@ class LeadViewSet(viewsets.ModelViewSet):
     serializer_class = LeadSerializer
 
 
+class ProjectStreamStatusViewSet(viewsets.ModelViewSet):
+    queryset = ProjectStreamStatus.objects.all()
+    serializer_class = ProjectStreamStatusSerializer
+
+
+class ProjectStreamViewSet(viewsets.ModelViewSet):
+    queryset = ProjectStream.objects.all()
+    serializer_class = ProjectStreamSerializer
+
+
+class ProjectReportViewSet(viewsets.ModelViewSet):
+    queryset = ProjectReport.objects.all()
+    serializer_class = ProjectReportSerializer
+
+
+class ImpStageViewSet(viewsets.ModelViewSet):
+    queryset = ImpStage.objects.all()
+    serializer_class = ImpStageSerializer
+
+
+class ProjectReportImpStageViewSet(viewsets.ModelViewSet):
+    queryset = ProjectReportImpStage.objects.all()
+    serializer_class = ProjectReportImpStageSerializer
+
+
+class ProjectStreamImpStageViewSet(viewsets.ModelViewSet):
+    queryset = ProjectStreamImpStage.objects.all()
+    serializer_class = ProjectStreamImpStageSerializer
+
+
+class PMStageViewSet(viewsets.ModelViewSet):
+    queryset = PMStage.objects.all()
+    serializer_class = PMStageSerializer
+
+
+class PMStepViewSet(viewsets.ModelViewSet):
+    queryset = PMStep.objects.all()
+    serializer_class = PMStepSerializer
+
+
+class ProjectPMStepViewSet(viewsets.ModelViewSet):
+    queryset = ProjectPMStep.objects.all()
+    serializer_class = ProjectPMStepSerializer
 

@@ -36,6 +36,15 @@ router.register(r'project_team', ProjectTeamViewSet)
 router.register(r'project', ProjectViewSet)
 router.register(r'contract', ContractViewSet)
 router.register(r'lead', LeadViewSet)
+router.register(r'project_stream_status', ProjectStreamStatusViewSet)
+router.register(r'project_stream', ProjectStreamViewSet)
+router.register(r'project_report', ProjectReportViewSet)
+router.register(r'imp_stage', ImpStageViewSet)
+router.register(r'project_report_imp_stage', ProjectReportImpStageViewSet)
+router.register(r'project_stream_imp_stage', ProjectStreamImpStageViewSet)
+router.register(r'pm_stage', PMStageViewSet)
+router.register(r'pm_step', PMStepViewSet)
+router.register(r'project_pm_step', ProjectPMStepViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

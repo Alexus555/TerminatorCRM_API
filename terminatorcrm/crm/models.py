@@ -305,4 +305,3 @@ class ProjectPMStep(models.Model):
     def __str__(self):
         return \
             f'project_pm_stage_id: {self.project_pm_stage} - pm_step_id: {self.pm_step} - status_id: {self.status_id}'
-
