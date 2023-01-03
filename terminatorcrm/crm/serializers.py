@@ -102,6 +102,7 @@ class ProjectTeamSerializer(serializers.ModelSerializer):
     time_update = serializers.DateTimeField(read_only=True)
 
 
+
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
