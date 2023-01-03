@@ -60,7 +60,7 @@ class Product(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
 
-    industry = models.ForeignKey('Industry', on_delete=models.PROTECT, null=True)
+    category = models.ForeignKey('ProductCategory', on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return self.name
@@ -131,8 +131,8 @@ class ProjectTeam(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
-    client_department = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, null=True)
+    client_department = models.CharField(max_length=255, null=True)
     ts_start_date = models.DateField(null=True)
     ts_end_date = models.DateField(null=True)
     rm_start_date = models.DateField(null=True)
@@ -142,7 +142,7 @@ class Project(models.Model):
     contract_amount = models.DecimalField(default=0, max_digits=15, decimal_places=2)
     net_amount = models.DecimalField(default=0, max_digits=15, decimal_places=2)
     sub_amount = models.DecimalField(default=0, max_digits=15, decimal_places=2)
-    sub_months = models.SmallIntegerField(default=0)
+    sub_months = models.SmallIntegerField(default=0, null=True)
     is_commercial = models.BooleanField(default=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
@@ -150,8 +150,8 @@ class Project(models.Model):
 
     client = models.ForeignKey('Client', on_delete=models.PROTECT, null=False)
     product = models.ForeignKey('Product', on_delete=models.PROTECT, null=False)
-    project_type = models.ForeignKey('ProjectType', on_delete=models.PROTECT, null=False)
-    project_status = models.ForeignKey('ProjectStatus', on_delete=models.PROTECT, null=False)
+    project_type = models.ForeignKey('ProjectType', on_delete=models.PROTECT, null=True)
+    project_status = models.ForeignKey('ProjectStatus', on_delete=models.PROTECT, null=True)
     lead = models.ForeignKey('Lead', on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
