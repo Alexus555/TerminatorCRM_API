@@ -45,6 +45,7 @@ router.register(r'project_stream_imp_stage', ProjectStreamImpStageViewSet)
 router.register(r'pm_stage', PMStageViewSet)
 router.register(r'pm_step', PMStepViewSet)
 router.register(r'project_pm_step', ProjectPMStepViewSet)
+router.register(r'project_pm_stage', ProjectPMStageViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

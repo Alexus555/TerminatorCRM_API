@@ -120,3 +120,9 @@ class ProjectPMStepViewSet(viewsets.ModelViewSet):
     queryset = ProjectPMStep.objects.all()
     serializer_class = ProjectPMStepSerializer
 
+
+class ProjectPMStageViewSet(viewsets.ModelViewSet):
+    queryset = ProjectPMStage.objects.all()
+    serializer_class = ProjectPMStageSerializer
+
+

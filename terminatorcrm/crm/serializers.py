@@ -132,7 +132,7 @@ class LeadSerializer(serializers.ModelSerializer):
 
 class ProjectStreamStatusSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Lead
+        model = ProjectStreamStatus
         fields = ('__all__')
 
     time_create = serializers.DateTimeField(read_only=True)
@@ -141,7 +141,7 @@ class ProjectStreamStatusSerializer(serializers.ModelSerializer):
 
 class ProjectStreamSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Lead
+        model = ProjectStream
         fields = ('__all__')
 
     time_create = serializers.DateTimeField(read_only=True)
@@ -150,7 +150,7 @@ class ProjectStreamSerializer(serializers.ModelSerializer):
 
 class ProjectReportSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Lead
+        model = ProjectReport
         fields = ('__all__')
 
     time_create = serializers.DateTimeField(read_only=True)
@@ -159,7 +159,7 @@ class ProjectReportSerializer(serializers.ModelSerializer):
 
 class ImpStageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Lead
+        model = ImpStage
         fields = ('__all__')
 
     time_create = serializers.DateTimeField(read_only=True)
@@ -168,7 +168,7 @@ class ImpStageSerializer(serializers.ModelSerializer):
 
 class ProjectReportImpStageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Lead
+        model = ProjectReportImpStage
         fields = ('__all__')
 
     time_create = serializers.DateTimeField(read_only=True)
@@ -177,7 +177,7 @@ class ProjectReportImpStageSerializer(serializers.ModelSerializer):
 
 class ProjectStreamImpStageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Lead
+        model = ProjectStreamImpStage
         fields = ('__all__')
 
     time_create = serializers.DateTimeField(read_only=True)
@@ -186,7 +186,7 @@ class ProjectStreamImpStageSerializer(serializers.ModelSerializer):
 
 class PMStageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Lead
+        model = PMStage
         fields = ('__all__')
 
     time_create = serializers.DateTimeField(read_only=True)
@@ -195,7 +195,7 @@ class PMStageSerializer(serializers.ModelSerializer):
 
 class PMStepSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Lead
+        model = PMStep
         fields = ('__all__')
 
     time_create = serializers.DateTimeField(read_only=True)
@@ -204,11 +204,17 @@ class PMStepSerializer(serializers.ModelSerializer):
 
 class ProjectPMStepSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Lead
+        model = ProjectPMStep
         fields = ('__all__')
 
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
 
 
+class ProjectPMStageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectPMStage
+        fields = ('__all__')
 
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
