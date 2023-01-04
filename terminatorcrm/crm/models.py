@@ -211,11 +211,11 @@ class ProjectStream(models.Model):
 
 class ProjectReport(models.Model):
     name = models.CharField(max_length=255)
-    category_id = models.CharField(max_length=255)
-    source_name = models.CharField(max_length=255)
-    comment = models.CharField(max_length=500)
-    description = models.CharField(max_length=500)
-    image_url = models.URLField()
+    category_id = models.CharField(max_length=255, null=True)
+    source_name = models.CharField(max_length=255, null=True)
+    comment = models.CharField(max_length=500, null=True)
+    description = models.CharField(max_length=500, null=True)
+    image_url = models.URLField(null=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -299,9 +299,35 @@ class ProjectPMStep(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
 
-    project_pm_stage = models.ForeignKey('PMStage', on_delete=models.PROTECT, null=False)
+    project_pm_stage = models.ForeignKey('ProjectPMStage', on_delete=models.PROTECT, null=False)
     pm_step = models.ForeignKey('PMStep', on_delete=models.PROTECT, null=False)
 
     def __str__(self):
         return \
             f'project_pm_stage_id: {self.project_pm_stage} - pm_step_id: {self.pm_step} - status_id: {self.status_id}'
+
+
+class ProjectPMStage(models.Model):
+
+    status_percent = models.DecimalField(null=True, max_digits=17, decimal_places=2)
+    ts_start_date = models.DateField(null=True)
+    ts_end_date = models.DateField(null=True)
+    rm_start_date = models.DateField(null=True)
+    rm_end_date = models.DateField(null=True)
+    fact_start_date = models.DateField(null=True)
+    fact_end_date = models.DateField(null=True)
+    is_payable = models.BooleanField(default=False, null=True)
+    invoice_number = models.CharField(max_length=100, null=True)
+    share_share = models.DecimalField(null=True, max_digits=17, decimal_places=2)
+    is_invoice_issued = models.BooleanField(default=False, null=True)
+    is_invoice_paid = models.BooleanField(default=False, null=True)
+
+    time_create = models.DateTimeField(auto_now_add=True)
+    time_update = models.DateTimeField(auto_now=True)
+
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, null=False)
+    pm_stage = models.ForeignKey('PMStage', on_delete=models.PROTECT, null=False)
+
+    def __str__(self):
+        return \
+            f'pm_stage_id: {self.pm_stage} - project_id: {self.project}'
