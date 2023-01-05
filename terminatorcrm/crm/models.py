@@ -8,6 +8,9 @@ class Supplier(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['id']
+
     def __str__(self):
         return self.name
 
@@ -25,6 +28,9 @@ class Client(models.Model):
 
     industry = models.ForeignKey('Industry', on_delete=models.PROTECT, null=True)
 
+    class Meta:
+        ordering = ['id']
+
     def __str__(self):
         return self.name
 
@@ -34,6 +40,9 @@ class Industry(models.Model):
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -49,6 +58,9 @@ class Contractor(models.Model):
 
     client = models.ForeignKey('Client', on_delete=models.PROTECT, null=False)
 
+    class Meta:
+        ordering = ['id']
+
     def __str__(self):
         return self.name
 
@@ -62,6 +74,9 @@ class Product(models.Model):
 
     category = models.ForeignKey('ProductCategory', on_delete=models.PROTECT, null=True)
 
+    class Meta:
+        ordering = ['id']
+
     def __str__(self):
         return self.name
 
@@ -71,6 +86,9 @@ class ProductCategory(models.Model):
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -82,6 +100,9 @@ class ProjectType(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['id']
+
     def __str__(self):
         return self.name
 
@@ -91,6 +112,9 @@ class ProjectStatus(models.Model):
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -102,6 +126,9 @@ class Member(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['id']
+
     def __str__(self):
         return self.name
 
@@ -111,6 +138,9 @@ class Role(models.Model):
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -124,6 +154,9 @@ class ProjectTeam(models.Model):
     project = models.ForeignKey('Project', on_delete=models.PROTECT, null=False)
     member = models.ForeignKey('Member', on_delete=models.PROTECT, null=False)
     role = models.ForeignKey('Role', on_delete=models.PROTECT, null=False)
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
         return f'{self.member} ({self.role})'
@@ -154,6 +187,9 @@ class Project(models.Model):
     project_status = models.ForeignKey('ProjectStatus', on_delete=models.PROTECT, null=True)
     lead = models.ForeignKey('Lead', on_delete=models.SET_NULL, null=True)
 
+    class Meta:
+        ordering = ['id']
+
     def __str__(self):
         return self.name
 
@@ -172,6 +208,9 @@ class Contract(models.Model):
     project = models.ForeignKey('Project', on_delete=models.PROTECT, null=False)
     parent_contract = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
 
+    class Meta:
+        ordering = ['id']
+
     def __str__(self):
         return self.name
 
@@ -182,6 +221,9 @@ class Lead(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['id']
+
     def __str__(self):
         return self.name
 
@@ -191,6 +233,9 @@ class ProjectStreamStatus(models.Model):
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -204,6 +249,9 @@ class ProjectStream(models.Model):
 
     project = models.ForeignKey('Project', on_delete=models.PROTECT, null=False)
     status = models.ForeignKey('ProjectStreamStatus', on_delete=models.PROTECT, null=False)
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -222,6 +270,9 @@ class ProjectReport(models.Model):
 
     project_stream = models.ForeignKey('ProjectStream', on_delete=models.PROTECT, null=False)
 
+    class Meta:
+        ordering = ['id']
+
     def __str__(self):
         return self.name
 
@@ -232,6 +283,9 @@ class ImpStage(models.Model):
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
         return self.name_ru
@@ -246,6 +300,9 @@ class ProjectReportImpStage(models.Model):
 
     project_report = models.ForeignKey('ProjectReport', on_delete=models.PROTECT, null=False)
     imp_stage = models.ForeignKey('ImpStage', on_delete=models.PROTECT, null=False)
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
         return \
@@ -265,6 +322,9 @@ class ProjectStreamImpStage(models.Model):
     project_stream = models.ForeignKey('ProjectStream', on_delete=models.PROTECT, null=False)
     imp_stage = models.ForeignKey('ImpStage', on_delete=models.PROTECT, null=False)
 
+    class Meta:
+        ordering = ['id']
+
     def __str__(self):
         return \
             f'project_stream_id: {self.project_stream} - imp_stage_id: {self.imp_stage}'
@@ -277,6 +337,9 @@ class PMStage(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['id']
+
     def __str__(self):
         return self.name_ru
 
@@ -287,6 +350,9 @@ class PMStep(models.Model):
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
         return self.name_ru
@@ -301,6 +367,9 @@ class ProjectPMStep(models.Model):
 
     project_pm_stage = models.ForeignKey('ProjectPMStage', on_delete=models.PROTECT, null=False)
     pm_step = models.ForeignKey('PMStep', on_delete=models.PROTECT, null=False)
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
         return \
@@ -327,6 +396,9 @@ class ProjectPMStage(models.Model):
 
     project = models.ForeignKey('Project', on_delete=models.CASCADE, null=False)
     pm_stage = models.ForeignKey('PMStage', on_delete=models.PROTECT, null=False)
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
         return \

@@ -101,6 +101,8 @@ class ProjectTeamSerializer(serializers.ModelSerializer):
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
 
+    #member = MemberSerializer('member')
+
 
 
 class ProjectSerializer(serializers.ModelSerializer):
