@@ -1,6 +1,8 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework import viewsets
 from django.shortcuts import render
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 from .models import *
 from .serializers import *
@@ -10,10 +12,22 @@ class SupplierViewSet(viewsets.ModelViewSet):
     queryset = Supplier.objects.all()
     serializer_class = SupplierSerializer
 
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['name', 'bin']
+    search_fields = ['name', 'bin']
+    ordering_fields = ['id', 'bin', 'name']
+    ordering = ['id']
+
 
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
+
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['name', 'industry__name']
+    search_fields = ['name', 'full_name', 'location', 'phone_number']
+    ordering_fields = ['id', 'name']
+    ordering = ['id']
 
 
 class IndustryViewSet(viewsets.ModelViewSet):

@@ -101,7 +101,14 @@ class ProjectTeamSerializer(serializers.ModelSerializer):
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
 
-    #member = MemberSerializer('member')
+    member_details = serializers.SerializerMethodField()
+    role_details = serializers.SerializerMethodField()
+
+    def get_member_details(self, instance):
+        return MemberSerializer(instance.member).data
+
+    def get_role_details(self, instance):
+        return RoleSerializer(instance.role).data
 
 
 
@@ -112,6 +119,11 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
+
+    team = serializers.SerializerMethodField()
+
+    def get_team(self, instance):
+        return ProjectTeamSerializer(instance.projectteam_set, many=True).data
 
 
 class ContractSerializer(serializers.ModelSerializer):
