@@ -12,7 +12,6 @@ class SupplierViewSet(viewsets.ModelViewSet):
     queryset = Supplier.objects.all()
     serializer_class = SupplierSerializer
 
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['name', 'bin']
     search_fields = ['name', 'bin']
     ordering_fields = ['id', 'bin', 'name']
@@ -23,7 +22,6 @@ class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
 
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['name', 'industry']
     search_fields = ['name', 'full_name', 'location', 'phone_number']
     ordering_fields = ['id', 'name']
