@@ -9,6 +9,28 @@ from .serializers import *
 
 
 class SupplierViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Suppliers to be viewed or edited.
+
+    retrieve:
+    Return a supplier instance.
+
+    create:
+    Create a supplier instance.
+
+    update:
+    Update a supplier instance.
+
+    destroy:
+    Delete a supplier instance.
+
+    list:
+    Return all supplier.
+        Can be ordered by id, name and bin.
+        Can be filtered by name and bin
+        Can be searched by name and bin
+    """
+
     queryset = Supplier.objects.all()
     serializer_class = SupplierSerializer
 
