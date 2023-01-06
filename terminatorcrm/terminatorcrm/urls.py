@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 
 from django.urls import path, include
@@ -22,6 +23,7 @@ from crm.views import *
 
 from rest_framework import routers
 from rest_framework.schemas import get_schema_view
+from rest_framework import permissions
 
 
 router = routers.DefaultRouter()
@@ -58,6 +60,9 @@ urlpatterns = [
         description="CRM API for Geometry internal use",  # Description of your app
         version="1.0.0",
         public=True,
+        permission_classes=[
+            permissions.IsAuthenticatedOrReadOnly,
+        ]
     ), name='openapi-schema'),
     path('docs/', TemplateView.as_view(
         template_name='swagger-ui.html',
