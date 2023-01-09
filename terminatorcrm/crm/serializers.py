@@ -121,9 +121,13 @@ class ProjectSerializer(serializers.ModelSerializer):
     time_update = serializers.DateTimeField(read_only=True)
 
     team = serializers.SerializerMethodField()
+    client_details = serializers.SerializerMethodField()
 
     def get_team(self, instance):
         return ProjectTeamSerializer(instance.projectteam_set, many=True).data
+
+    def get_client_details(self, instance):
+        return ClientSerializer(instance.client, many=False, read_only=True).data
 
 
 class ContractSerializer(serializers.ModelSerializer):
