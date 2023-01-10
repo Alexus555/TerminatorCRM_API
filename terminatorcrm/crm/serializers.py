@@ -228,6 +228,11 @@ class ProjectPMStepSerializer(serializers.ModelSerializer):
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
 
+    pm_step_details = serializers.SerializerMethodField()
+
+    def get_pm_step_details(self, instance):
+        return PMStepSerializer(instance.pm_step, many=False, read_only=True).data
+
 
 class ProjectPMStageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -236,3 +241,12 @@ class ProjectPMStageSerializer(serializers.ModelSerializer):
 
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
+
+    steps = serializers.SerializerMethodField()
+    pm_stage_details = serializers.SerializerMethodField()
+
+    def get_steps(self, instance):
+        return ProjectPMStepSerializer(instance.projectpmstep_set, many=True).data
+
+    def get_pm_stage_details(self, instance):
+        return PMStageSerializer(instance.pm_stage, many=False, read_only=True).data
