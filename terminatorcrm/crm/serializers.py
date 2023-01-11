@@ -165,6 +165,15 @@ class ProjectStreamSerializer(serializers.ModelSerializer):
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
 
+    project_stream_imp_stages = serializers.SerializerMethodField()
+    project_reports = serializers.SerializerMethodField()
+
+    def get_project_stream_imp_stages(self, instance):
+        return ProjectStreamImpStageSerializer(instance.projectstreamimpstage_set, many=True).data
+
+    def get_project_reports(self, instance):
+        return ProjectReportSerializer(instance.projectreport_set, many=True).data
+
 
 class ProjectReportSerializer(serializers.ModelSerializer):
     class Meta:
@@ -173,6 +182,11 @@ class ProjectReportSerializer(serializers.ModelSerializer):
 
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
+
+    project_report_imp_stages = serializers.SerializerMethodField()
+
+    def get_project_report_imp_stages(self, instance):
+        return ProjectReportImpStageSerializer(instance.projectreportimpstage_set, many=True).data
 
 
 class ImpStageSerializer(serializers.ModelSerializer):
@@ -192,6 +206,11 @@ class ProjectReportImpStageSerializer(serializers.ModelSerializer):
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
 
+    imp_stage_details = serializers.SerializerMethodField()
+
+    def get_imp_stage_details(self, instance):
+        return ImpStageSerializer(instance.imp_stage, many=False, read_only=True).data
+
 
 class ProjectStreamImpStageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -200,6 +219,11 @@ class ProjectStreamImpStageSerializer(serializers.ModelSerializer):
 
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
+
+    imp_stage_details = serializers.SerializerMethodField()
+
+    def get_imp_stage_details(self, instance):
+        return ImpStageSerializer(instance.imp_stage, many=False, read_only=True).data
 
 
 class PMStageSerializer(serializers.ModelSerializer):
