@@ -111,7 +111,6 @@ class ProjectTeamSerializer(serializers.ModelSerializer):
         return RoleSerializer(instance.role).data
 
 
-
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
@@ -123,11 +122,16 @@ class ProjectSerializer(serializers.ModelSerializer):
     team = serializers.SerializerMethodField()
     client_details = serializers.SerializerMethodField()
 
+    year = serializers.SerializerMethodField()
+
     def get_team(self, instance):
         return ProjectTeamSerializer(instance.projectteam_set, many=True).data
 
     def get_client_details(self, instance):
         return ClientSerializer(instance.client, many=False, read_only=True).data
+
+    def get_year(self, instance):
+        return instance.fact_start_date.year
 
 
 class ContractSerializer(serializers.ModelSerializer):

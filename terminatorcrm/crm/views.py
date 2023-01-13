@@ -1,6 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework import viewsets
+from django_filters import rest_framework as filters
 from django.shortcuts import render
 from rest_framework.filters import SearchFilter, OrderingFilter
 
@@ -126,22 +127,33 @@ class ProjectTeamViewSet(viewsets.ModelViewSet):
     queryset = ProjectTeam.objects.all()
     serializer_class = ProjectTeamSerializer
     filterset_fields = ['project', 'member', 'role']
-    #search_fields = ['name']
     ordering_fields = ['id', 'project', 'member', 'role']
     ordering = ['id']
+
+
+class ProjectFilter(filters.FilterSet):
+
+    year = filters.NumberFilter('fact_start_date', lookup_expr='year')
+
+    member = filters.NumberFilter('projectteam__member_id', lookup_expr='exact')
+
+    class Meta:
+        model = Project
+        fields = [
+            'name',
+            'client',
+            'product',
+            'project_type',
+            'project_status',
+            'is_commercial',
+        ]
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    filterset_fields = [
-        'name',
-        'client',
-        'product',
-        'project_type',
-        'project_status',
-        'is_commercial',
-    ]
+    filterset_class = ProjectFilter
+
     search_fields = [
         'name',
         'description',
