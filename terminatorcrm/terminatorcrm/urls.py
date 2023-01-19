@@ -71,4 +71,5 @@ urlpatterns = [
         template_name='swagger-ui.html',
         extra_context={'schema_url': 'openapi-schema'}
     )),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+#  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
