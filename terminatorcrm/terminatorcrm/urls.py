@@ -19,6 +19,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 from crm.views import *
 
 from rest_framework import routers
@@ -68,4 +71,4 @@ urlpatterns = [
         template_name='swagger-ui.html',
         extra_context={'schema_url': 'openapi-schema'}
     )),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

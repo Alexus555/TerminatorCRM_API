@@ -2,3 +2,4 @@
 /terminatorcrm/db.sqlite3
 /venv/*
 *.pyc
+/terminatorcrm/media/

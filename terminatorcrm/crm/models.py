@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Supplier(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, help_text='Supplier name')
     bin = models.CharField(max_length=12)
 
     time_create = models.DateTimeField(auto_now_add=True)
@@ -257,13 +257,17 @@ class ProjectStream(models.Model):
         return self.name
 
 
+def project_report_file_name(instance, filename):
+    return '/'.join(['reports', str(instance.id), filename])
+
+
 class ProjectReport(models.Model):
     name = models.CharField(max_length=255)
     category_id = models.CharField(max_length=255, null=True)
     source_name = models.CharField(max_length=255, null=True)
     comment = models.CharField(max_length=500, null=True)
     description = models.CharField(max_length=500, null=True)
-    image_url = models.URLField(null=True)
+    image_url = models.ImageField(null=True, upload_to=project_report_file_name, blank=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
