@@ -156,11 +156,11 @@ class ProjectSerializer(serializers.ModelSerializer):
                 project_pm_stage__in=pm_stages,
                 status_id=False).order_by('pm_step').first()
 
-        current_pm_stage = None
+        current_pm_stage_name = None
         if current_pm_step is not None:
-            current_pm_stage = current_pm_step.project_pm_stage
+            current_pm_stage_name = current_pm_step.project_pm_stage.pm_stage
 
-        return ProjectPMStageSerializer(current_pm_stage, many=False).data
+        return PMStageSerializer(instance=current_pm_stage_name, many=False).data
 
     def get_team(self, instance):
         return ProjectTeamSerializer(instance.projectteam_set, many=True).data
