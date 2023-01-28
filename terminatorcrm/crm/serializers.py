@@ -103,12 +103,35 @@ class ProjectTeamSerializer(serializers.ModelSerializer):
 
     member_details = serializers.SerializerMethodField()
     role_details = serializers.SerializerMethodField()
+    project_details = serializers.SerializerMethodField()
 
     def get_member_details(self, instance):
         return MemberSerializer(instance.member).data
 
     def get_role_details(self, instance):
         return RoleSerializer(instance.role).data
+
+    def get_project_details(self, instance):
+        return ProjectShortSerializer(instance.project).data
+
+
+class ProjectShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        exclude = [
+            'time_create',
+            'time_update',
+        ]
+
+    client_details = serializers.SerializerMethodField()
+
+    year = serializers.SerializerMethodField()
+
+    def get_client_details(self, instance):
+        return ClientSerializer(instance.client, many=False, read_only=True).data
+
+    def get_year(self, instance):
+        return instance.fact_start_date.year
 
 
 class ProjectSerializer(serializers.ModelSerializer):
