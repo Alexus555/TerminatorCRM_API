@@ -142,10 +142,25 @@ class ProjectSerializer(serializers.ModelSerializer):
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
 
+    current_stage_details = serializers.SerializerMethodField()
+
     team = serializers.SerializerMethodField()
     client_details = serializers.SerializerMethodField()
 
     year = serializers.SerializerMethodField()
+
+    def get_current_stage_details(self, instance):
+        pm_stages = ProjectPMStage.objects.filter(project=instance)
+        current_pm_step = \
+            ProjectPMStep.objects.filter(
+                project_pm_stage__in=pm_stages,
+                status_id=False).order_by('pm_step').first()
+
+        current_pm_stage = None
+        if current_pm_step is not None:
+            current_pm_stage = current_pm_step.project_pm_stage
+
+        return ProjectPMStageSerializer(current_pm_stage, many=False).data
 
     def get_team(self, instance):
         return ProjectTeamSerializer(instance.projectteam_set, many=True).data
