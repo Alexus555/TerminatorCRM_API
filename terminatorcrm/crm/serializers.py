@@ -320,7 +320,7 @@ class ProjectPMStageSerializer(serializers.ModelSerializer):
 
 class AgentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Role
+        model = Agent
         fields = ('__all__')
 
     time_create = serializers.DateTimeField(read_only=True)
@@ -329,7 +329,7 @@ class AgentSerializer(serializers.ModelSerializer):
 
 class LeadSourceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Role
+        model = LeadSource
         fields = ('__all__')
 
     time_create = serializers.DateTimeField(read_only=True)
@@ -338,7 +338,7 @@ class LeadSourceSerializer(serializers.ModelSerializer):
 
 class LeadStatusSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Role
+        model = LeadStatus
         fields = ('__all__')
 
     time_create = serializers.DateTimeField(read_only=True)
@@ -347,7 +347,7 @@ class LeadStatusSerializer(serializers.ModelSerializer):
 
 class ReasonSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Role
+        model = Reason
         fields = ('__all__')
 
     time_create = serializers.DateTimeField(read_only=True)
@@ -356,7 +356,7 @@ class ReasonSerializer(serializers.ModelSerializer):
 
 class SalesManagerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Role
+        model = SalesManager
         fields = ('__all__')
 
     time_create = serializers.DateTimeField(read_only=True)
@@ -365,7 +365,7 @@ class SalesManagerSerializer(serializers.ModelSerializer):
 
 class LeadStageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Role
+        model = LeadStage
         fields = ('__all__')
 
     time_create = serializers.DateTimeField(read_only=True)
