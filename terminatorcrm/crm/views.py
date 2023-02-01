@@ -286,7 +286,7 @@ class ProjectPMStageViewSet(viewsets.ModelViewSet):
 
 
 class AgentViewSet(viewsets.ModelViewSet):
-    queryset = Member.objects.all()
+    queryset = Agent.objects.all()
     serializer_class = AgentSerializer
     filterset_fields = ['name']
     search_fields = ['name']
@@ -295,7 +295,7 @@ class AgentViewSet(viewsets.ModelViewSet):
 
 
 class LeadSourceViewSet(viewsets.ModelViewSet):
-    queryset = Member.objects.all()
+    queryset = LeadSource.objects.all()
     serializer_class = LeadSourceSerializer
     filterset_fields = ['name']
     search_fields = ['name']
@@ -304,7 +304,7 @@ class LeadSourceViewSet(viewsets.ModelViewSet):
 
 
 class ReasonViewSet(viewsets.ModelViewSet):
-    queryset = Member.objects.all()
+    queryset = Reason.objects.all()
     serializer_class = ReasonSerializer
     filterset_fields = ['name']
     search_fields = ['name']
@@ -313,7 +313,7 @@ class ReasonViewSet(viewsets.ModelViewSet):
 
 
 class LeadStatusViewSet(viewsets.ModelViewSet):
-    queryset = Member.objects.all()
+    queryset = LeadStatus.objects.all()
     serializer_class = LeadStatusSerializer
     filterset_fields = ['name']
     search_fields = ['name']
@@ -322,7 +322,7 @@ class LeadStatusViewSet(viewsets.ModelViewSet):
 
 
 class SalesManagerViewSet(viewsets.ModelViewSet):
-    queryset = Member.objects.all()
+    queryset = SalesManager.objects.all()
     serializer_class = SalesManagerSerializer
     filterset_fields = ['name']
     search_fields = ['name']
@@ -331,7 +331,7 @@ class SalesManagerViewSet(viewsets.ModelViewSet):
 
 
 class LeadStageViewSet(viewsets.ModelViewSet):
-    queryset = Member.objects.all()
+    queryset = LeadStage.objects.all()
     serializer_class = LeadStageSerializer
     filterset_fields = ['name']
     search_fields = ['name']
