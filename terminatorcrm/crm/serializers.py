@@ -316,3 +316,58 @@ class ProjectPMStageSerializer(serializers.ModelSerializer):
 
     def get_pm_stage_details(self, instance):
         return PMStageSerializer(instance.pm_stage, many=False, read_only=True).data
+
+
+class AgentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+
+class LeadSourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+
+class LeadStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+
+class ReasonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+
+class SalesManagerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+
+class LeadStageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+

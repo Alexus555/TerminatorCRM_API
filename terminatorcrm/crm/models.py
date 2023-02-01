@@ -22,6 +22,7 @@ class Client(models.Model):
     location = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=255)
     client_header = models.CharField(max_length=255)
+    position = models.CharField(max_length=255, null=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -215,19 +216,6 @@ class Contract(models.Model):
         return self.name
 
 
-class Lead(models.Model):
-    name = models.CharField(max_length=255)
-
-    time_create = models.DateTimeField(auto_now_add=True)
-    time_update = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        ordering = ['id']
-
-    def __str__(self):
-        return self.name
-
-
 class ProjectStreamStatus(models.Model):
     name = models.CharField(max_length=255)
 
@@ -407,3 +395,111 @@ class ProjectPMStage(models.Model):
     def __str__(self):
         return \
             f'pm_stage_id: {self.pm_stage} - project_id: {self.project}'
+
+
+class LeadStage(models.Model):
+    name = models.CharField(max_length=255)
+
+    time_create = models.DateTimeField(auto_now_add=True)
+    time_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return self.name
+
+
+class SalesManager(models.Model):
+    name = models.CharField(max_length=255)
+
+    time_create = models.DateTimeField(auto_now_add=True)
+    time_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return self.name
+
+
+class LeadStatus(models.Model):
+    name = models.CharField(max_length=255)
+
+    time_create = models.DateTimeField(auto_now_add=True)
+    time_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return self.name
+
+
+class Reason(models.Model):
+    name = models.CharField(max_length=255)
+
+    time_create = models.DateTimeField(auto_now_add=True)
+    time_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return self.name
+
+
+class LeadSource(models.Model):
+    name = models.CharField(max_length=255)
+
+    time_create = models.DateTimeField(auto_now_add=True)
+    time_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return self.name
+
+
+class Agent(models.Model):
+    name = models.CharField(max_length=255)
+
+    time_create = models.DateTimeField(auto_now_add=True)
+    time_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return self.name
+
+
+class Lead(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.CharField(max_length=500, null=True)
+    start_date = models.DateField(null=True)
+    proposal_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
+    price = models.DecimalField(null=True, max_digits=17, decimal_places=2)
+    comment = models.CharField(max_length=500, null=True)
+    comment_date = models.DateTimeField(auto_now=True)
+    lead_contact = models.CharField(max_length=255, null=True)
+
+    time_create = models.DateTimeField(auto_now_add=True)
+    time_update = models.DateTimeField(auto_now=True)
+
+    client_id = models.ForeignKey('Client', on_delete=models.PROTECT, null=True)
+    status_id = models.ForeignKey('LeadStatus', on_delete=models.PROTECT, null=True)
+    current_stage_id = models.ForeignKey('LeadStage', on_delete=models.PROTECT, null=True)
+    reason_id = models.ForeignKey('Reason', on_delete=models.PROTECT, null=True)
+    product_id = models.ForeignKey('Product', on_delete=models.PROTECT, null=True)
+    lead_source_id = models.ForeignKey('LeadSource', on_delete=models.PROTECT, null=True)
+    sales_manager_id = models.ForeignKey('SalesManager', on_delete=models.PROTECT, null=True)
+    agent_id = models.ForeignKey('Agent', on_delete=models.PROTECT, null=True)
+
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return self.name

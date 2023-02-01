@@ -4,3 +4,5 @@
 *.pyc
 /terminatorcrm/media/
 /terminatorcrm/static/
+/terminatorcrm/log/debug.log
+/.idea/encodings.xml

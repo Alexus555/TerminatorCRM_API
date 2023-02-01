@@ -55,6 +55,13 @@ router.register(r'pm_step', PMStepViewSet)
 router.register(r'project_pm_step', ProjectPMStepViewSet)
 router.register(r'project_pm_stage', ProjectPMStageViewSet)
 
+router.register(r'agent', AgentViewSet)
+router.register(r'lead_source', LeadSourceViewSet)
+router.register(r'reason', ReasonViewSet)
+router.register(r'lead_status', LeadStatusViewSet)
+router.register(r'sales_manager', SalesManagerViewSet)
+router.register(r'lead_stage', LeadStageViewSet)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),

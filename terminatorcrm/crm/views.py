@@ -179,7 +179,6 @@ class ContractViewSet(viewsets.ModelViewSet):
     ordering = ['id']
 
 
-
 class LeadViewSet(viewsets.ModelViewSet):
     queryset = Lead.objects.all()
     serializer_class = LeadSerializer
@@ -285,4 +284,57 @@ class ProjectPMStageViewSet(viewsets.ModelViewSet):
     ordering_fields = ['id', 'status_percent']
     ordering = ['id']
 
+
+class AgentViewSet(viewsets.ModelViewSet):
+    queryset = Member.objects.all()
+    serializer_class = AgentSerializer
+    filterset_fields = ['name']
+    search_fields = ['name']
+    ordering_fields = ['id', 'name']
+    ordering = ['id']
+
+
+class LeadSourceViewSet(viewsets.ModelViewSet):
+    queryset = Member.objects.all()
+    serializer_class = LeadSourceSerializer
+    filterset_fields = ['name']
+    search_fields = ['name']
+    ordering_fields = ['id', 'name']
+    ordering = ['id']
+
+
+class ReasonViewSet(viewsets.ModelViewSet):
+    queryset = Member.objects.all()
+    serializer_class = ReasonSerializer
+    filterset_fields = ['name']
+    search_fields = ['name']
+    ordering_fields = ['id', 'name']
+    ordering = ['id']
+
+
+class LeadStatusViewSet(viewsets.ModelViewSet):
+    queryset = Member.objects.all()
+    serializer_class = LeadStatusSerializer
+    filterset_fields = ['name']
+    search_fields = ['name']
+    ordering_fields = ['id', 'name']
+    ordering = ['id']
+
+
+class SalesManagerViewSet(viewsets.ModelViewSet):
+    queryset = Member.objects.all()
+    serializer_class = SalesManagerSerializer
+    filterset_fields = ['name']
+    search_fields = ['name']
+    ordering_fields = ['id', 'name']
+    ordering = ['id']
+
+
+class LeadStageViewSet(viewsets.ModelViewSet):
+    queryset = Member.objects.all()
+    serializer_class = LeadStageSerializer
+    filterset_fields = ['name']
+    search_fields = ['name']
+    ordering_fields = ['id', 'name']
+    ordering = ['id']
 
