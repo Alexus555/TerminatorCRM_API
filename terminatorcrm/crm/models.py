@@ -480,7 +480,7 @@ class Lead(models.Model):
     end_date = models.DateField(null=True)
     price = models.DecimalField(null=True, max_digits=17, decimal_places=2)
     comment = models.CharField(max_length=500, null=True)
-    comment_date = models.DateTimeField(auto_now=True)
+    comment_date = models.DateTimeField(auto_now=True, null=True)
     lead_contact = models.CharField(max_length=255, null=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
