@@ -486,14 +486,14 @@ class Lead(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
 
-    client_id = models.ForeignKey('Client', on_delete=models.PROTECT, null=True)
-    status_id = models.ForeignKey('LeadStatus', on_delete=models.PROTECT, null=True)
-    current_stage_id = models.ForeignKey('LeadStage', on_delete=models.PROTECT, null=True)
-    reason_id = models.ForeignKey('Reason', on_delete=models.PROTECT, null=True)
-    product_id = models.ForeignKey('Product', on_delete=models.PROTECT, null=True)
-    lead_source_id = models.ForeignKey('LeadSource', on_delete=models.PROTECT, null=True)
-    sales_manager_id = models.ForeignKey('SalesManager', on_delete=models.PROTECT, null=True)
-    agent_id = models.ForeignKey('Agent', on_delete=models.PROTECT, null=True)
+    client = models.ForeignKey('Client', on_delete=models.PROTECT, null=True)
+    status = models.ForeignKey('LeadStatus', on_delete=models.PROTECT, null=True)
+    current_stage = models.ForeignKey('LeadStage', on_delete=models.PROTECT, null=True)
+    reason = models.ForeignKey('Reason', on_delete=models.PROTECT, null=True)
+    product = models.ForeignKey('Product', on_delete=models.PROTECT, null=True)
+    lead_source = models.ForeignKey('LeadSource', on_delete=models.PROTECT, null=True)
+    sales_manager = models.ForeignKey('SalesManager', on_delete=models.PROTECT, null=True)
+    agent = models.ForeignKey('Agent', on_delete=models.PROTECT, null=True)
 
     class Meta:
         ordering = ['id']
