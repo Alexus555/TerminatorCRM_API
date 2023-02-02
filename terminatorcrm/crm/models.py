@@ -51,7 +51,7 @@ class Industry(models.Model):
 
 class Contractor(models.Model):
     name = models.CharField(max_length=255)
-    bin = models.CharField(max_length=12)
+    bin = models.CharField(max_length=20)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
