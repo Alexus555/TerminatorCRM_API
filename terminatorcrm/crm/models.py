@@ -3,7 +3,7 @@ from django.db import models
 
 class Supplier(models.Model):
     name = models.CharField(max_length=255, help_text='Supplier name')
-    bin = models.CharField(max_length=12)
+    bin = models.CharField(max_length=12, null=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -17,11 +17,11 @@ class Supplier(models.Model):
 
 class Client(models.Model):
     name = models.CharField(max_length=255)
-    full_name = models.CharField(max_length=500)
-    description = models.CharField(max_length=500)
-    location = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=255)
-    client_header = models.CharField(max_length=255)
+    full_name = models.CharField(max_length=500, null=True)
+    description = models.CharField(max_length=500, null=True)
+    location = models.CharField(max_length=255, null=True)
+    phone_number = models.CharField(max_length=255, null=True)
+    client_header = models.CharField(max_length=255, null=True)
     position = models.CharField(max_length=255, null=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
@@ -51,7 +51,7 @@ class Industry(models.Model):
 
 class Contractor(models.Model):
     name = models.CharField(max_length=255)
-    bin = models.CharField(max_length=20)
+    bin = models.CharField(max_length=20, null=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -65,7 +65,7 @@ class Contractor(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=3)
-    full_name = models.CharField(max_length=255)
+    full_name = models.CharField(max_length=255, null=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -268,7 +268,7 @@ class ProjectReport(models.Model):
 
 class ImpStage(models.Model):
     name_ru = models.CharField(max_length=255)
-    name_en = models.CharField(max_length=255)
+    name_en = models.CharField(max_length=255, null=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -321,7 +321,7 @@ class ProjectStreamImpStage(models.Model):
 
 class PMStage(models.Model):
     name_ru = models.CharField(max_length=255)
-    name_en = models.CharField(max_length=255)
+    name_en = models.CharField(max_length=255, null=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -335,7 +335,7 @@ class PMStage(models.Model):
 
 class PMStep(models.Model):
     name_ru = models.CharField(max_length=255)
-    name_en = models.CharField(max_length=255)
+    name_en = models.CharField(max_length=255, null=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
