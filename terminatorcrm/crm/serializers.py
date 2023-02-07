@@ -210,6 +210,15 @@ class ProjectStreamSerializer(serializers.ModelSerializer):
     project_stream_imp_stages = serializers.SerializerMethodField()
     project_reports = serializers.SerializerMethodField()
 
+    status_details = serializers.SerializerMethodField()
+    project_details = serializers.SerializerMethodField()
+
+    def get_status_details(self, instance):
+        return ProjectStreamStatusSerializer(instance.status).data
+
+    def get_project_details(self, instance):
+        return ProjectShortSerializer(instance.project).data
+
     def get_project_stream_imp_stages(self, instance):
         return ProjectStreamImpStageSerializer(instance.projectstreamimpstage_set, many=True).data
 
