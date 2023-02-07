@@ -228,7 +228,6 @@ class ProjectReportImpStageViewSet(viewsets.ModelViewSet):
     queryset = ProjectReportImpStage.objects.all()
     serializer_class = ProjectReportImpStageSerializer
     filterset_fields = ['status_id', 'project_report', 'imp_stage']
-    #search_fields = ['name']
     ordering_fields = ['id', 'status_id']
     ordering = ['id']
 
@@ -264,7 +263,6 @@ class ProjectPMStepViewSet(viewsets.ModelViewSet):
     queryset = ProjectPMStep.objects.all()
     serializer_class = ProjectPMStepSerializer
     filterset_fields = ['status_id', 'project_pm_stage', 'pm_step']
-    #search_fields = ['name']
     ordering_fields = ['id', 'status_id']
     ordering = ['id']
 

@@ -202,7 +202,7 @@ class Contract(models.Model):
     time_update = models.DateTimeField(auto_now=True)
 
     supplier = models.ForeignKey('Supplier', on_delete=models.PROTECT, null=False)
-    contractor = models.ForeignKey('Contractor', on_delete=models.PROTECT, null=False)
+    contractor = models.ForeignKey('Contractor', on_delete=models.PROTECT, null=True)
     project = models.ForeignKey('Project', on_delete=models.PROTECT, null=True)
     parent_contract = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
 
