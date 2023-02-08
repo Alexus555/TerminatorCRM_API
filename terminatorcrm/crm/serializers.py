@@ -1,3 +1,5 @@
+import datetime
+
 from rest_framework import serializers
 
 from .models import *
@@ -150,17 +152,30 @@ class ProjectSerializer(serializers.ModelSerializer):
     year = serializers.SerializerMethodField()
 
     def get_current_stage_details(self, instance):
-        pm_stages = ProjectPMStage.objects.filter(project=instance)
-        current_pm_step = \
-            ProjectPMStep.objects.filter(
-                project_pm_stage__in=pm_stages,
-                status_id=False).order_by('pm_step').first()
 
-        current_pm_stage_name = None
-        if current_pm_step is not None:
-            current_pm_stage_name = current_pm_step.project_pm_stage.pm_stage
+        current_pm_stage = None
 
-        return PMStageSerializer(instance=current_pm_stage_name, many=False).data
+        # for projects with subscriptions we use different algorithm
+        if instance.sub_amount > 0:
+            now = datetime.datetime.now().date()
+            fact_end_date = instance.fact_end_date
+
+            if fact_end_date is not None \
+                    and fact_end_date <= now:
+                current_pm_stage = PMStage.objects.get(stage_descriptor='E')
+            else:
+                current_pm_stage = PMStage.objects.get(stage_descriptor='P')
+        else:
+            pm_stages = ProjectPMStage.objects.filter(project=instance)
+            current_pm_step = \
+                ProjectPMStep.objects.filter(
+                    project_pm_stage__in=pm_stages,
+                    status_id=False).order_by('pm_step').first()
+
+            if current_pm_step is not None:
+                current_pm_stage = current_pm_step.project_pm_stage.pm_stage
+
+        return PMStageSerializer(instance=current_pm_stage, many=False).data
 
     def get_team(self, instance):
         return ProjectTeamSerializer(instance.projectteam_set, many=True).data

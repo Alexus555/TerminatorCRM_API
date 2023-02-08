@@ -322,6 +322,7 @@ class ProjectStreamImpStage(models.Model):
 class PMStage(models.Model):
     name_ru = models.CharField(max_length=255)
     name_en = models.CharField(max_length=255, null=True)
+    stage_descriptor = models.CharField(max_length=2, null=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
