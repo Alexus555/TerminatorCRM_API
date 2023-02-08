@@ -154,17 +154,22 @@ class ProjectSerializer(serializers.ModelSerializer):
     def get_current_stage_details(self, instance):
 
         current_pm_stage = None
+        now = datetime.datetime.now().date()
+        fact_end_date = instance.fact_end_date
 
-        # for projects with subscriptions we use different algorithm
-        if instance.sub_amount > 0:
-            now = datetime.datetime.now().date()
-            fact_end_date = instance.fact_end_date
+        if fact_end_date is not None \
+                and fact_end_date <= now:
+            current_pm_stage = PMStage()
+            current_pm_stage.name_ru = 'Завершен'
+            current_pm_stage.name_en = 'Finished'
+            current_pm_stage.pk = 0
 
-            if fact_end_date is not None \
-                    and fact_end_date <= now:
-                current_pm_stage = PMStage.objects.get(stage_descriptor='E')
-            else:
-                current_pm_stage = PMStage.objects.get(stage_descriptor='P')
+        elif instance.sub_amount > 0:
+            current_pm_stage = PMStage()
+            current_pm_stage.name_ru = 'В реализации'
+            current_pm_stage.name_en = 'In process'
+            current_pm_stage.pk = 0
+
         else:
             pm_stages = ProjectPMStage.objects.filter(project=instance)
             current_pm_step = \
