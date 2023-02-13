@@ -254,10 +254,14 @@ class ProjectReportSerializer(serializers.ModelSerializer):
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
 
+    project_id = serializers.SerializerMethodField()
     project_report_imp_stages = serializers.SerializerMethodField()
 
     def get_project_report_imp_stages(self, instance):
         return ProjectReportImpStageSerializer(instance.projectreportimpstage_set, many=True).data
+
+    def get_project_id(self, instance):
+        return instance.project_stream.project.pk
 
 
 class ImpStageSerializer(serializers.ModelSerializer):
