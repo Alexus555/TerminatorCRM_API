@@ -177,6 +177,12 @@ class ProjectSerializer(serializers.ModelSerializer):
                     project_pm_stage__in=pm_stages,
                     status_id=False).order_by('pm_step').first()
 
+            if current_pm_step is None:
+                current_pm_step = \
+                    ProjectPMStep.objects.filter(
+                        project_pm_stage__in=pm_stages,
+                        status_id=True).order_by('pm_step').last()
+
             if current_pm_step is not None:
                 current_pm_stage = current_pm_step.project_pm_stage.pm_stage
 
