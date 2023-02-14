@@ -206,10 +206,25 @@ class ProjectStreamViewSet(viewsets.ModelViewSet):
     ordering = ['id']
 
 
+class ProjectReportFilter(filters.FilterSet):
+
+    project_id = filters.NumberFilter('project_stream__project_id', lookup_expr='exact')
+
+    class Meta:
+        model = ProjectReport
+        fields = [
+            'name',
+            'category_id',
+            'source_name',
+            'project_stream',
+        ]
+
+
 class ProjectReportViewSet(viewsets.ModelViewSet):
     queryset = ProjectReport.objects.all()
     serializer_class = ProjectReportSerializer
-    filterset_fields = ['name', 'project_stream']
+    filterset_class = ProjectReportFilter
+    # filterset_fields = ['name', 'project_stream']
     search_fields = ['name', 'category_id', 'source_name', 'comment', 'description']
     ordering_fields = ['id', 'name']
     ordering = ['id']
