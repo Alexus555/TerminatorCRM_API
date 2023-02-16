@@ -265,6 +265,11 @@ class ProjectReport(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def get_image_url(self):
+        if self.image_url and hasattr(self.image_url, 'url'):
+            return self.image_url.url
+
 
 class ImpStage(models.Model):
     name_ru = models.CharField(max_length=255)

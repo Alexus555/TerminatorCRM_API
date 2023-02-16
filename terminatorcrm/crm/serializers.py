@@ -260,6 +260,8 @@ class ProjectReportSerializer(serializers.ModelSerializer):
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
 
+    image_url = serializers.CharField(source="get_image_url", default='', allow_null=True)
+
     project_id = serializers.SerializerMethodField()
     project_report_imp_stages = serializers.SerializerMethodField()
 
