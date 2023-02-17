@@ -184,8 +184,8 @@ class Project(models.Model):
 
     client = models.ForeignKey('Client', on_delete=models.PROTECT, null=False)
     product = models.ForeignKey('Product', on_delete=models.PROTECT, null=False)
-    project_type = models.ForeignKey('ProjectType', on_delete=models.PROTECT, null=True)
-    project_status = models.ForeignKey('ProjectStatus', on_delete=models.PROTECT, null=True)
+    project_type = models.ForeignKey('ProjectType', on_delete=models.PROTECT, null=False, default=0)
+    project_status = models.ForeignKey('ProjectStatus', on_delete=models.PROTECT, null=False, default=0)
     lead = models.ForeignKey('Lead', on_delete=models.SET_NULL, null=True)
 
     class Meta:
