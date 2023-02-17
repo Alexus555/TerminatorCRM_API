@@ -152,7 +152,7 @@ class ProjectTeam(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
 
-    project = models.ForeignKey('Project', on_delete=models.PROTECT, null=False)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, null=False)
     member = models.ForeignKey('Member', on_delete=models.PROTECT, null=False)
     role = models.ForeignKey('Role', on_delete=models.PROTECT, null=False)
 
@@ -242,7 +242,7 @@ class ProjectStream(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
 
-    project = models.ForeignKey('Project', on_delete=models.PROTECT, null=False)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, null=False)
     status = models.ForeignKey('ProjectStreamStatus', on_delete=models.PROTECT, null=False)
 
     class Meta:
@@ -267,7 +267,7 @@ class ProjectReport(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
 
-    project_stream = models.ForeignKey('ProjectStream', on_delete=models.PROTECT, null=False)
+    project_stream = models.ForeignKey('ProjectStream', on_delete=models.CASCADE, null=False)
 
     class Meta:
         ordering = ['id']
@@ -304,7 +304,7 @@ class ProjectReportImpStage(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
 
-    project_report = models.ForeignKey('ProjectReport', on_delete=models.PROTECT, null=False)
+    project_report = models.ForeignKey('ProjectReport', on_delete=models.CASCADE, null=False)
     imp_stage = models.ForeignKey('ImpStage', on_delete=models.PROTECT, null=False)
 
     class Meta:
@@ -325,7 +325,7 @@ class ProjectStreamImpStage(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
 
-    project_stream = models.ForeignKey('ProjectStream', on_delete=models.PROTECT, null=False)
+    project_stream = models.ForeignKey('ProjectStream', on_delete=models.CASCADE, null=False)
     imp_stage = models.ForeignKey('ImpStage', on_delete=models.PROTECT, null=False)
 
     class Meta:
@@ -372,7 +372,7 @@ class ProjectPMStep(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
 
-    project_pm_stage = models.ForeignKey('ProjectPMStage', on_delete=models.PROTECT, null=False)
+    project_pm_stage = models.ForeignKey('ProjectPMStage', on_delete=models.CASCADE, null=False)
     pm_step = models.ForeignKey('PMStep', on_delete=models.PROTECT, null=False)
 
     class Meta:
