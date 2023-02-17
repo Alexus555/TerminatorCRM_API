@@ -5,6 +5,14 @@ from rest_framework import serializers
 from .models import *
 
 
+def set_blank_date_to_null(data):
+    date_fields = [k for k in data.keys() if k.find('_date') > 0]
+
+    for field in date_fields:
+        if data[field] == '':
+            data[field] = None
+
+
 class SupplierSerializer(serializers.ModelSerializer):
     class Meta:
         model = Supplier
@@ -197,6 +205,11 @@ class ProjectSerializer(serializers.ModelSerializer):
     def get_year(self, instance):
         return instance.fact_start_date.year
 
+    def to_internal_value(self, data):
+        set_blank_date_to_null(data)
+
+        return super(ProjectSerializer, self).to_internal_value(data)
+
 
 class ContractSerializer(serializers.ModelSerializer):
     class Meta:
@@ -205,6 +218,11 @@ class ContractSerializer(serializers.ModelSerializer):
 
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
+
+    def to_internal_value(self, data):
+        set_blank_date_to_null(data)
+
+        return super(ContractSerializer, self).to_internal_value(data)
 
 
 class LeadSerializer(serializers.ModelSerializer):
@@ -251,6 +269,11 @@ class ProjectStreamSerializer(serializers.ModelSerializer):
     def get_project_reports(self, instance):
         return ProjectReportSerializer(instance.projectreport_set, many=True).data
 
+    def to_internal_value(self, data):
+        set_blank_date_to_null(data)
+
+        return super(ProjectStreamSerializer, self).to_internal_value(data)
+
 
 class ProjectReportSerializer(serializers.ModelSerializer):
     class Meta:
@@ -260,7 +283,7 @@ class ProjectReportSerializer(serializers.ModelSerializer):
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
 
-    image_url = serializers.CharField(source="get_image_url", default='', allow_null=True)
+    # image_src = serializers.CharField(source="get_image_url", default='', allow_null=True, read_only=True)
 
     project_id = serializers.SerializerMethodField()
     project_report_imp_stages = serializers.SerializerMethodField()
@@ -270,6 +293,11 @@ class ProjectReportSerializer(serializers.ModelSerializer):
 
     def get_project_id(self, instance):
         return instance.project_stream.project.pk
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['image_url'] = instance.get_image_url
+        return representation
 
 
 class ImpStageSerializer(serializers.ModelSerializer):
@@ -358,6 +386,11 @@ class ProjectPMStageSerializer(serializers.ModelSerializer):
     def get_pm_stage_details(self, instance):
         return PMStageSerializer(instance.pm_stage, many=False, read_only=True).data
 
+    def to_internal_value(self, data):
+        set_blank_date_to_null(data)
+
+        return super(ProjectPMStageSerializer, self).to_internal_value(data)
+
 
 class AgentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -411,4 +444,9 @@ class LeadStageSerializer(serializers.ModelSerializer):
 
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
+
+    def to_internal_value(self, data):
+        set_blank_date_to_null(data)
+
+        return super(LeadStageSerializer, self).to_internal_value(data)
 
