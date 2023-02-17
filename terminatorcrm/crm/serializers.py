@@ -203,12 +203,18 @@ class ProjectSerializer(serializers.ModelSerializer):
         return ClientSerializer(instance.client, many=False, read_only=True).data
 
     def get_year(self, instance):
-        return instance.fact_start_date.year
+        year = datetime.datetime.now().year
+        if instance.fact_start_date:
+            year = instance.fact_start_date.year
+        return year
 
     def to_internal_value(self, data):
         set_blank_date_to_null(data)
 
         return super(ProjectSerializer, self).to_internal_value(data)
+
+    #def create(self, validated_data):
+    #    pass
 
 
 class ContractSerializer(serializers.ModelSerializer):
