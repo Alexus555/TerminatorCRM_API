@@ -17,12 +17,12 @@ class Supplier(models.Model):
 
 class Client(models.Model):
     name = models.CharField(max_length=255)
-    full_name = models.CharField(max_length=500, null=True)
-    description = models.CharField(max_length=500, null=True)
-    location = models.CharField(max_length=255, null=True)
-    phone_number = models.CharField(max_length=255, null=True)
-    client_header = models.CharField(max_length=255, null=True)
-    position = models.CharField(max_length=255, null=True)
+    full_name = models.CharField(max_length=500, null=True, blank=True)
+    description = models.CharField(max_length=500, null=True, blank=True)
+    location = models.CharField(max_length=255, null=True, blank=True)
+    phone_number = models.CharField(max_length=255, null=True, blank=True)
+    client_header = models.CharField(max_length=255, null=True, blank=True)
+    position = models.CharField(max_length=255, null=True, blank=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -51,7 +51,7 @@ class Industry(models.Model):
 
 class Contractor(models.Model):
     name = models.CharField(max_length=255)
-    bin = models.CharField(max_length=20, null=True)
+    bin = models.CharField(max_length=20, null=True, blank=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -65,7 +65,7 @@ class Contractor(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=3)
-    full_name = models.CharField(max_length=255, null=True)
+    full_name = models.CharField(max_length=255, null=True, blank=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -162,8 +162,8 @@ class ProjectTeam(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=255)
-    description = models.CharField(max_length=255, null=True)
-    client_department = models.CharField(max_length=255, null=True)
+    description = models.CharField(max_length=255, null=True, blank=True)
+    client_department = models.CharField(max_length=255, null=True, blank=True)
     ts_start_date = models.DateField(null=True)
     ts_end_date = models.DateField(null=True)
     rm_start_date = models.DateField(null=True)
@@ -248,10 +248,10 @@ def project_report_file_name(instance, filename):
 
 class ProjectReport(models.Model):
     name = models.CharField(max_length=255)
-    category_id = models.CharField(max_length=255, null=True)
-    source_name = models.CharField(max_length=255, null=True)
-    comment = models.CharField(max_length=500, null=True)
-    description = models.CharField(max_length=500, null=True)
+    category_id = models.CharField(max_length=255, null=True, blank=True)
+    source_name = models.CharField(max_length=255, null=True, blank=True)
+    comment = models.CharField(max_length=500, null=True, blank=True)
+    description = models.CharField(max_length=500, null=True, blank=True)
     image_url = models.ImageField(null=True, upload_to=project_report_file_name, blank=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
@@ -273,7 +273,7 @@ class ProjectReport(models.Model):
 
 class ImpStage(models.Model):
     name_ru = models.CharField(max_length=255)
-    name_en = models.CharField(max_length=255, null=True)
+    name_en = models.CharField(max_length=255, null=True, blank=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -327,7 +327,7 @@ class ProjectStreamImpStage(models.Model):
 class PMStage(models.Model):
     name_ru = models.CharField(max_length=255)
     name_en = models.CharField(max_length=255, null=True)
-    stage_descriptor = models.CharField(max_length=2, null=True)
+    stage_descriptor = models.CharField(max_length=2, null=True, blank=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -341,7 +341,7 @@ class PMStage(models.Model):
 
 class PMStep(models.Model):
     name_ru = models.CharField(max_length=255)
-    name_en = models.CharField(max_length=255, null=True)
+    name_en = models.CharField(max_length=255, null=True, blank=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -480,14 +480,14 @@ class Agent(models.Model):
 
 class Lead(models.Model):
     name = models.CharField(max_length=255)
-    description = models.CharField(max_length=500, null=True)
+    description = models.CharField(max_length=500, null=True, blank=True)
     start_date = models.DateField(null=True)
     proposal_date = models.DateField(null=True)
     end_date = models.DateField(null=True)
     price = models.DecimalField(null=True, max_digits=17, decimal_places=2)
-    comment = models.CharField(max_length=500, null=True)
+    comment = models.CharField(max_length=500, null=True, blank=True)
     comment_date = models.DateTimeField(auto_now=True, null=True)
-    lead_contact = models.CharField(max_length=255, null=True)
+    lead_contact = models.CharField(max_length=255, null=True, blank=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
