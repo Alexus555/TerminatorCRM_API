@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from django.db import models
+
 
 
 class Supplier(models.Model):
@@ -191,6 +194,13 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def get_year(self):
+        year = datetime.now().year
+        if self.fact_start_date:
+            year = self.fact_start_date.year
+        return year
+
 
 class Contract(models.Model):
     name = models.CharField(max_length=255)
@@ -274,6 +284,8 @@ class ProjectReport(models.Model):
 class ImpStage(models.Model):
     name_ru = models.CharField(max_length=255)
     name_en = models.CharField(max_length=255, null=True, blank=True)
+    required_for_stream = models.BooleanField(default=False)
+    required_for_report = models.BooleanField(default=False)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -327,7 +339,7 @@ class ProjectStreamImpStage(models.Model):
 class PMStage(models.Model):
     name_ru = models.CharField(max_length=255)
     name_en = models.CharField(max_length=255, null=True)
-    stage_descriptor = models.CharField(max_length=2, null=True, blank=True)
+    required_for_project = models.BooleanField(default=False)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)

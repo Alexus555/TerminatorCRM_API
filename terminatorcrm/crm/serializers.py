@@ -1,4 +1,4 @@
-import datetime
+#from datetime import datetime
 
 from rest_framework import serializers
 
@@ -125,98 +125,6 @@ class ProjectTeamSerializer(serializers.ModelSerializer):
         return ProjectShortSerializer(instance.project).data
 
 
-class ProjectShortSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Project
-        exclude = [
-            'time_create',
-            'time_update',
-        ]
-
-    client_details = serializers.SerializerMethodField()
-
-    year = serializers.SerializerMethodField()
-
-    def get_client_details(self, instance):
-        return ClientSerializer(instance.client, many=False, read_only=True).data
-
-    def get_year(self, instance):
-        return instance.fact_start_date.year
-
-
-class ProjectSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Project
-        fields = ('__all__')
-
-    time_create = serializers.DateTimeField(read_only=True)
-    time_update = serializers.DateTimeField(read_only=True)
-
-    current_stage_details = serializers.SerializerMethodField()
-
-    team = serializers.SerializerMethodField()
-    client_details = serializers.SerializerMethodField()
-
-    year = serializers.SerializerMethodField()
-
-    def get_current_stage_details(self, instance):
-
-        current_pm_stage = None
-        now = datetime.datetime.now().date()
-        fact_end_date = instance.fact_end_date
-
-        if fact_end_date is not None \
-                and fact_end_date <= now:
-            current_pm_stage = PMStage()
-            current_pm_stage.name_ru = 'Завершен'
-            current_pm_stage.name_en = 'Finished'
-            current_pm_stage.pk = 0
-
-        elif instance.sub_amount > 0:
-            current_pm_stage = PMStage()
-            current_pm_stage.name_ru = 'В реализации'
-            current_pm_stage.name_en = 'In process'
-            current_pm_stage.pk = 0
-
-        else:
-            pm_stages = ProjectPMStage.objects.filter(project=instance)
-            current_pm_step = \
-                ProjectPMStep.objects.filter(
-                    project_pm_stage__in=pm_stages,
-                    status_id=False).order_by('pm_step').first()
-
-            if current_pm_step is None:
-                current_pm_step = \
-                    ProjectPMStep.objects.filter(
-                        project_pm_stage__in=pm_stages,
-                        status_id=True).order_by('pm_step').last()
-
-            if current_pm_step is not None:
-                current_pm_stage = current_pm_step.project_pm_stage.pm_stage
-
-        return PMStageSerializer(instance=current_pm_stage, many=False).data
-
-    def get_team(self, instance):
-        return ProjectTeamSerializer(instance.projectteam_set, many=True).data
-
-    def get_client_details(self, instance):
-        return ClientSerializer(instance.client, many=False, read_only=True).data
-
-    def get_year(self, instance):
-        year = datetime.datetime.now().year
-        if instance.fact_start_date:
-            year = instance.fact_start_date.year
-        return year
-
-    def to_internal_value(self, data):
-        set_blank_date_to_null(data)
-
-        return super(ProjectSerializer, self).to_internal_value(data)
-
-    #def create(self, validated_data):
-    #    pass
-
-
 class ContractSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contract
@@ -280,6 +188,15 @@ class ProjectStreamSerializer(serializers.ModelSerializer):
 
         return super(ProjectStreamSerializer, self).to_internal_value(data)
 
+    def create(self, validated_data):
+        stream = ProjectStream.objects.create(**validated_data)
+
+        required_stages = ImpStage.objects.filter(required_for_stream=True).order_by("pk")
+        for stage in required_stages:
+            ProjectStreamImpStage.objects.create(project_stream=stream, imp_stage=stage)
+
+        return stream
+
 
 class ProjectReportSerializer(serializers.ModelSerializer):
     class Meta:
@@ -304,6 +221,15 @@ class ProjectReportSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation['image_url'] = instance.get_image_url
         return representation
+
+    def create(self, validated_data):
+        report = ProjectReport.objects.create(**validated_data)
+
+        required_stages = ImpStage.objects.filter(required_for_report=True).order_by("pk")
+        for stage in required_stages:
+            ProjectReportImpStage.objects.create(project_report=report, imp_stage=stage)
+
+        return report
 
 
 class ImpStageSerializer(serializers.ModelSerializer):
@@ -396,6 +322,100 @@ class ProjectPMStageSerializer(serializers.ModelSerializer):
         set_blank_date_to_null(data)
 
         return super(ProjectPMStageSerializer, self).to_internal_value(data)
+
+
+class ProjectShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        exclude = [
+            'time_create',
+            'time_update',
+        ]
+
+    client_details = serializers.SerializerMethodField()
+
+    year = serializers.CharField(source="get_year")
+
+    def get_client_details(self, instance):
+        return ClientSerializer(instance.client, many=False, read_only=True).data
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Project
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+    current_stage_details = serializers.SerializerMethodField()
+
+    team = serializers.SerializerMethodField()
+    client_details = serializers.SerializerMethodField()
+
+    year = serializers.CharField(source="get_year", read_only=True)
+
+    def get_current_stage_details(self, instance):
+
+        current_pm_stage = None
+        now = datetime.now().date()
+        fact_end_date = instance.fact_end_date
+
+        if fact_end_date is not None \
+                and fact_end_date <= now:
+            current_pm_stage = PMStage()
+            current_pm_stage.name_ru = 'Завершен'
+            current_pm_stage.name_en = 'Finished'
+            current_pm_stage.pk = 0
+
+        elif instance.sub_amount > 0:
+            current_pm_stage = PMStage()
+            current_pm_stage.name_ru = 'В реализации'
+            current_pm_stage.name_en = 'In process'
+            current_pm_stage.pk = 0
+
+        else:
+            pm_stages = ProjectPMStage.objects.filter(project=instance)
+            current_pm_step = \
+                ProjectPMStep.objects.filter(
+                    project_pm_stage__in=pm_stages,
+                    status_id=False).order_by('pm_step').first()
+
+            if current_pm_step is None:
+                current_pm_step = \
+                    ProjectPMStep.objects.filter(
+                        project_pm_stage__in=pm_stages,
+                        status_id=True).order_by('pm_step').last()
+
+            if current_pm_step is not None:
+                current_pm_stage = current_pm_step.project_pm_stage.pm_stage
+            else:
+                first_pm_stage = pm_stages.order_by("pm_stage").first()
+                if first_pm_stage:
+                    current_pm_stage = first_pm_stage.pm_stage
+
+        return PMStageSerializer(instance=current_pm_stage, many=False).data
+
+    def get_team(self, instance):
+        return ProjectTeamSerializer(instance.projectteam_set, many=True).data
+
+    def get_client_details(self, instance):
+        return ClientSerializer(instance.client, many=False, read_only=True).data
+
+    def to_internal_value(self, data):
+        set_blank_date_to_null(data)
+
+        return super(ProjectSerializer, self).to_internal_value(data)
+
+    def create(self, validated_data):
+        project = Project.objects.create(**validated_data)
+
+        required_stages = PMStage.objects.filter(required_for_project=True).order_by("pk")
+        for stage in required_stages:
+            ProjectPMStage.objects.create(project=project, pm_stage=stage)
+
+        return project
 
 
 class AgentSerializer(serializers.ModelSerializer):
