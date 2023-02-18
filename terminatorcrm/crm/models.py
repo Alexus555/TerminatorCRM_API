@@ -376,7 +376,7 @@ class ProjectPMStep(models.Model):
     pm_step = models.ForeignKey('PMStep', on_delete=models.PROTECT, null=False)
 
     class Meta:
-        ordering = ['id']
+        ordering = ['pm_step']
 
     def __str__(self):
         return \
@@ -405,7 +405,7 @@ class ProjectPMStage(models.Model):
     pm_stage = models.ForeignKey('PMStage', on_delete=models.PROTECT, null=False)
 
     class Meta:
-        ordering = ['id']
+        ordering = ['pm_stage']
 
     def __str__(self):
         return \
