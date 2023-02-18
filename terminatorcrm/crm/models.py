@@ -355,6 +355,8 @@ class PMStep(models.Model):
     name_ru = models.CharField(max_length=255)
     name_en = models.CharField(max_length=255, null=True, blank=True)
 
+    required_for_stage = models.ForeignKey('PMStage', on_delete=models.SET_NULL, null=True)
+
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
 

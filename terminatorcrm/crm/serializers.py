@@ -323,6 +323,15 @@ class ProjectPMStageSerializer(serializers.ModelSerializer):
 
         return super(ProjectPMStageSerializer, self).to_internal_value(data)
 
+    def create(self, validated_data):
+        project_pm_stage = ProjectPMStage.objects.create(**validated_data)
+
+        required_steps = PMStep.objects.filter(required_for_stage=project_pm_stage.pm_stage).order_by("pk")
+        for step in required_steps:
+            ProjectPMStep.objects.create(project_pm_stage=project_pm_stage, pm_step=step)
+
+        return project_pm_stage
+
 
 class ProjectShortSerializer(serializers.ModelSerializer):
     class Meta:
