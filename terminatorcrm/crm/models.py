@@ -66,7 +66,7 @@ class Contractor(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=3)
+    name = models.CharField(max_length=4)
     full_name = models.CharField(max_length=255, null=True, blank=True)
 
     time_create = models.DateTimeField(auto_now_add=True)
