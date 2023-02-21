@@ -1,7 +1,6 @@
 from datetime import datetime
 
-from django.db import models
-
+from django.db import models, transaction
 
 
 class Supplier(models.Model):
@@ -163,6 +162,21 @@ class ProjectTeam(models.Model):
         return f'{self.member} ({self.role})'
 
 
+class ProjectManager(models.Manager):
+
+    @transaction.atomic
+    def create(self, **data):
+
+        project = Project(**data)
+        project.save()
+
+        required_stages = PMStage.objects.filter(required_for_project=True).order_by("pk")
+        for stage in required_stages:
+            ProjectPMStage.objects.create(project=project, pm_stage=stage)
+
+        return project
+
+
 class Project(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255, null=True, blank=True)
@@ -187,6 +201,8 @@ class Project(models.Model):
     project_type = models.ForeignKey('ProjectType', on_delete=models.PROTECT, null=False, default=0)
     project_status = models.ForeignKey('ProjectStatus', on_delete=models.PROTECT, null=False, default=0)
     lead = models.ForeignKey('Lead', on_delete=models.SET_NULL, null=True)
+
+    objects = ProjectManager()
 
     class Meta:
         ordering = ['id']
@@ -236,6 +252,21 @@ class ProjectStreamStatus(models.Model):
         return self.name
 
 
+class ProjectStreamManager(models.Manager):
+
+    @transaction.atomic
+    def create(self, **data):
+
+        stream = ProjectStream(**data)
+        stream.save()
+
+        required_stages = ImpStage.objects.filter(required_for_stream=True).order_by("pk")
+        for stage in required_stages:
+            ProjectStreamImpStage.objects.create(project_stream=stream, imp_stage=stage)
+
+        return stream
+
+
 class ProjectStream(models.Model):
     name = models.CharField(max_length=255)
 
@@ -244,6 +275,8 @@ class ProjectStream(models.Model):
 
     project = models.ForeignKey('Project', on_delete=models.CASCADE, null=False)
     status = models.ForeignKey('ProjectStreamStatus', on_delete=models.PROTECT, null=False)
+
+    objects = ProjectStreamManager()
 
     class Meta:
         ordering = ['id']
@@ -254,6 +287,20 @@ class ProjectStream(models.Model):
 
 def project_report_file_name(instance, filename):
     return '/'.join(['reports', str(instance.id), filename])
+
+
+class ProjectReportManager(models.Manager):
+
+    @transaction.atomic
+    def create(self, **data):
+        report = ProjectReport(**data)
+        report.save()
+
+        required_stages = ImpStage.objects.filter(required_for_report=True).order_by("pk")
+        for stage in required_stages:
+            ProjectReportImpStage.objects.create(project_report=report, imp_stage=stage)
+
+        return report
 
 
 class ProjectReport(models.Model):
@@ -269,6 +316,8 @@ class ProjectReport(models.Model):
 
     project_stream = models.ForeignKey('ProjectStream', on_delete=models.CASCADE, null=False)
 
+    objects = ProjectReportManager()
+
     class Meta:
         ordering = ['id']
 
@@ -282,6 +331,7 @@ class ProjectReport(models.Model):
 
 
 class ImpStage(models.Model):
+
     name_ru = models.CharField(max_length=255)
     name_en = models.CharField(max_length=255, null=True, blank=True)
     required_for_stream = models.BooleanField(default=False)
@@ -385,6 +435,20 @@ class ProjectPMStep(models.Model):
             f'project_pm_stage_id: {self.project_pm_stage} - pm_step_id: {self.pm_step} - status_id: {self.status_id}'
 
 
+class ProjectPMStageManager(models.Manager):
+
+    @transaction.atomic
+    def create(self, **data):
+        project_pm_stage = ProjectPMStage(**data)
+        project_pm_stage.save()
+
+        required_steps = PMStep.objects.filter(required_for_stage=project_pm_stage.pm_stage).order_by("pk")
+        for step in required_steps:
+            ProjectPMStep.objects.create(project_pm_stage=project_pm_stage, pm_step=step)
+
+        return project_pm_stage
+
+
 class ProjectPMStage(models.Model):
 
     status_percent = models.DecimalField(null=True, max_digits=17, decimal_places=2)
@@ -405,6 +469,8 @@ class ProjectPMStage(models.Model):
 
     project = models.ForeignKey('Project', on_delete=models.CASCADE, null=False)
     pm_stage = models.ForeignKey('PMStage', on_delete=models.PROTECT, null=False)
+
+    objects = ProjectPMStageManager()
 
     class Meta:
         ordering = ['pm_stage']

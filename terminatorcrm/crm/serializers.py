@@ -1,5 +1,3 @@
-#from datetime import datetime
-
 from rest_framework import serializers
 
 from .models import *
@@ -188,15 +186,6 @@ class ProjectStreamSerializer(serializers.ModelSerializer):
 
         return super(ProjectStreamSerializer, self).to_internal_value(data)
 
-    def create(self, validated_data):
-        stream = ProjectStream.objects.create(**validated_data)
-
-        required_stages = ImpStage.objects.filter(required_for_stream=True).order_by("pk")
-        for stage in required_stages:
-            ProjectStreamImpStage.objects.create(project_stream=stream, imp_stage=stage)
-
-        return stream
-
 
 class ProjectReportSerializer(serializers.ModelSerializer):
     class Meta:
@@ -221,15 +210,6 @@ class ProjectReportSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation['image_url'] = instance.get_image_url
         return representation
-
-    def create(self, validated_data):
-        report = ProjectReport.objects.create(**validated_data)
-
-        required_stages = ImpStage.objects.filter(required_for_report=True).order_by("pk")
-        for stage in required_stages:
-            ProjectReportImpStage.objects.create(project_report=report, imp_stage=stage)
-
-        return report
 
 
 class ImpStageSerializer(serializers.ModelSerializer):
@@ -323,15 +303,6 @@ class ProjectPMStageSerializer(serializers.ModelSerializer):
 
         return super(ProjectPMStageSerializer, self).to_internal_value(data)
 
-    def create(self, validated_data):
-        project_pm_stage = ProjectPMStage.objects.create(**validated_data)
-
-        required_steps = PMStep.objects.filter(required_for_stage=project_pm_stage.pm_stage).order_by("pk")
-        for step in required_steps:
-            ProjectPMStep.objects.create(project_pm_stage=project_pm_stage, pm_step=step)
-
-        return project_pm_stage
-
 
 class ProjectShortSerializer(serializers.ModelSerializer):
     class Meta:
@@ -417,15 +388,6 @@ class ProjectSerializer(serializers.ModelSerializer):
 
         return super(ProjectSerializer, self).to_internal_value(data)
 
-    def create(self, validated_data):
-        project = Project.objects.create(**validated_data)
-
-        required_stages = PMStage.objects.filter(required_for_project=True).order_by("pk")
-        for stage in required_stages:
-            ProjectPMStage.objects.create(project=project, pm_stage=stage)
-
-        return project
-
 
 class AgentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -484,4 +446,3 @@ class LeadStageSerializer(serializers.ModelSerializer):
         set_blank_date_to_null(data)
 
         return super(LeadStageSerializer, self).to_internal_value(data)
-
