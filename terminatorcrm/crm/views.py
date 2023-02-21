@@ -294,8 +294,8 @@ class ProjectPMStageViewSet(viewsets.ModelViewSet):
         'is_invoice_paid',
     ]
     search_fields = ['invoice_number']
-    ordering_fields = ['id', 'status_percent']
-    ordering = ['id']
+    ordering_fields = ['id', 'status_percent', 'pm_stage']
+    ordering = ['pm_stage']
 
 
 class AgentViewSet(viewsets.ModelViewSet):
