@@ -145,6 +145,28 @@ class LeadSerializer(serializers.ModelSerializer):
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
 
+    client_details = serializers.SerializerMethodField()
+
+    product_details = serializers.SerializerMethodField()
+
+    sales_manager_details = serializers.SerializerMethodField()
+
+    year = serializers.CharField(source="get_year", read_only=True)
+
+    def get_client_details(self, instance):
+        return ClientSerializer(instance.client, many=False, read_only=True).data
+
+    def get_product_details(self, instance):
+        return ProductSerializer(instance.product, many=False, read_only=True).data
+
+    def get_sales_manager_details(self, instance):
+        return SalesManagerSerializer(instance.sales_manager, many=False, read_only=True).data
+
+    def to_internal_value(self, data):
+        set_blank_date_to_null(data)
+
+        return super(LeadSerializer, self).to_internal_value(data)
+
 
 class ProjectStreamStatusSerializer(serializers.ModelSerializer):
     class Meta:

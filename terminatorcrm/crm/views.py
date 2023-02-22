@@ -179,12 +179,25 @@ class ContractViewSet(viewsets.ModelViewSet):
     ordering = ['id']
 
 
+class LeadFilter(filters.FilterSet):
+
+    year = filters.NumberFilter('start_date', lookup_expr='year')
+
+    class Meta:
+        model = Lead
+        fields = [
+            'name',
+            'status',
+            'product',
+        ]
+
+
 class LeadViewSet(viewsets.ModelViewSet):
     queryset = Lead.objects.all()
     serializer_class = LeadSerializer
-    filterset_fields = ['name']
-    search_fields = ['name']
-    ordering_fields = ['id', 'name']
+    filterset_class = LeadFilter
+    search_fields = ['name', 'description', 'comment']
+    ordering_fields = ['id', 'name', 'start_date']
     ordering = ['id']
 
 

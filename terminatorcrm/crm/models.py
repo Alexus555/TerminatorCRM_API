@@ -586,3 +586,10 @@ class Lead(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def get_year(self):
+        year = datetime.now().year
+        if self.start_date:
+            year = self.start_date.year
+        return year
