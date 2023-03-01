@@ -62,6 +62,9 @@ router.register(r'lead_status', LeadStatusViewSet)
 router.register(r'sales_manager', SalesManagerViewSet)
 router.register(r'lead_stage', LeadStageViewSet)
 
+router.register(r'cash', CashViewSet)
+router.register(r'project_payment', ProjectPaymentViewSet)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),

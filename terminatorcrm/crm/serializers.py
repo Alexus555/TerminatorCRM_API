@@ -311,6 +311,8 @@ class ProjectPMStageSerializer(serializers.ModelSerializer):
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
 
+    status_percent = serializers.FloatField(source='get_status_percent', read_only=True)
+
     steps = serializers.SerializerMethodField()
     pm_stage_details = serializers.SerializerMethodField()
 
@@ -468,3 +470,26 @@ class LeadStageSerializer(serializers.ModelSerializer):
         set_blank_date_to_null(data)
 
         return super(LeadStageSerializer, self).to_internal_value(data)
+
+
+class CashSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cash
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+
+class ProjectPaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectPayment
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+    def to_internal_value(self, data):
+        set_blank_date_to_null(data)
+
+        return super(ProjectPaymentSerializer, self).to_internal_value(data)

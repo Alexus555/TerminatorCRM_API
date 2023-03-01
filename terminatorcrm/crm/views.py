@@ -364,3 +364,28 @@ class LeadStageViewSet(viewsets.ModelViewSet):
     ordering_fields = ['id', 'name']
     ordering = ['id']
 
+
+class CashViewSet(viewsets.ModelViewSet):
+    queryset = Cash.objects.all()
+    serializer_class = CashSerializer
+    filterset_fields = ['name']
+    search_fields = ['name']
+    ordering_fields = ['id', 'name']
+    ordering = ['id']
+
+
+class ProjectPaymentViewSet(viewsets.ModelViewSet):
+    queryset = ProjectPayment.objects.all()
+    serializer_class = ProjectPaymentSerializer
+    filterset_fields = [
+        'plan_date',
+        'fact_date',
+        'invoice',
+        'plan_amount',
+        'fact_amount',
+        'project',
+        'cash',
+    ]
+    search_fields = ['invoice']
+    ordering_fields = ['id', 'project', 'cash']
+    ordering = ['id']

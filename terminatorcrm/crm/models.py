@@ -451,7 +451,7 @@ class ProjectPMStageManager(models.Manager):
 
 class ProjectPMStage(models.Model):
 
-    status_percent = models.DecimalField(null=True, max_digits=17, decimal_places=2)
+    # status_percent = models.DecimalField(null=True, max_digits=17, decimal_places=2)
     ts_start_date = models.DateField(null=True, blank=True)
     ts_end_date = models.DateField(null=True, blank=True)
     rm_start_date = models.DateField(null=True, blank=True)
@@ -474,6 +474,20 @@ class ProjectPMStage(models.Model):
 
     class Meta:
         ordering = ['pm_stage']
+
+    @property
+    def get_status_percent(self):
+        calc_percent = 0
+        processed_steps_count = ProjectPMStep.objects.filter(
+            project_pm_stage=self.pk,
+            status_id=True).count()
+        total_steps_count = ProjectPMStep.objects.filter(
+            project_pm_stage=self.pk).count()
+
+        if total_steps_count > 0:
+            calc_percent = round(float(processed_steps_count / total_steps_count) * 100, 2)
+
+        return calc_percent
 
     def __str__(self):
         return \
@@ -593,3 +607,38 @@ class Lead(models.Model):
         if self.start_date:
             year = self.start_date.year
         return year
+
+
+class Cash(models.Model):
+    name = models.CharField(max_length=255)
+
+    time_create = models.DateTimeField(auto_now_add=True)
+    time_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return self.name
+
+
+class ProjectPayment(models.Model):
+
+    plan_date = models.DateField(null=True, blank=True)
+    fact_date = models.DateField(null=True, blank=True)
+    invoice = models.CharField(max_length=100, null=True, blank=True)
+    plan_amount = models.DecimalField(null=True, max_digits=17, decimal_places=2)
+    fact_amount = models.DecimalField(null=True, max_digits=17, decimal_places=2)
+
+    time_create = models.DateTimeField(auto_now_add=True)
+    time_update = models.DateTimeField(auto_now=True)
+
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, null=False)
+    cash = models.ForeignKey('Cash', on_delete=models.PROTECT, null=False)
+
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return \
+            f'cash_id: {self.cash} - project_id: {self.project}'
