@@ -389,3 +389,12 @@ class ProjectPaymentViewSet(viewsets.ModelViewSet):
     search_fields = ['invoice']
     ordering_fields = ['id', 'project', 'cash']
     ordering = ['id']
+
+
+class ProjectFileViewSet(viewsets.ModelViewSet):
+    queryset = ProjectFile.objects.all()
+    serializer_class = ProjectFileSerializer
+    filterset_fields = ['project']
+    search_fields = ['description']
+    ordering_fields = ['id', 'project']
+    ordering = ['id']

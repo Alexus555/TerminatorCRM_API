@@ -65,6 +65,8 @@ router.register(r'lead_stage', LeadStageViewSet)
 router.register(r'cash', CashViewSet)
 router.register(r'project_payment', ProjectPaymentViewSet)
 
+router.register(r'project_file', ProjectFileViewSet)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),

@@ -489,7 +489,26 @@ class ProjectPaymentSerializer(serializers.ModelSerializer):
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
 
+    cash_details = serializers.SerializerMethodField()
+
+    def get_cash_details(self, instance):
+        return CashSerializer(instance.cash, many=False, read_only=True).data
+
     def to_internal_value(self, data):
         set_blank_date_to_null(data)
 
         return super(ProjectPaymentSerializer, self).to_internal_value(data)
+
+
+class ProjectFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectFile
+        fields = ('__all__')
+
+    time_create = serializers.DateTimeField(read_only=True)
+    time_update = serializers.DateTimeField(read_only=True)
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['file'] = instance.get_file_url
+        return representation

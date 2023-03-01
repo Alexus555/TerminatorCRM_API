@@ -642,3 +642,28 @@ class ProjectPayment(models.Model):
     def __str__(self):
         return \
             f'cash_id: {self.cash} - project_id: {self.project}'
+
+
+def project_file_name(instance, filename):
+    return '/'.join(['projects', str(instance.project), filename])
+
+
+class ProjectFile(models.Model):
+    description = models.CharField(max_length=500)
+    file = models.FileField(blank=True, null=True, upload_to=project_file_name)
+
+    time_create = models.DateTimeField(auto_now_add=True)
+    time_update = models.DateTimeField(auto_now=True)
+
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, null=False)
+
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return self.description
+
+    @property
+    def get_file_url(self):
+        if self.file and hasattr(self.file, 'url'):
+            return self.file.url
