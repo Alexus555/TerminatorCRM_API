@@ -109,6 +109,7 @@ class ProjectType(models.Model):
 
 class ProjectStatus(models.Model):
     name = models.CharField(max_length=255)
+    final_status = models.BooleanField(default=False)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -166,9 +167,7 @@ class ProjectManager(models.Manager):
 
     @transaction.atomic
     def create(self, **data):
-
-        project = Project(**data)
-        project.save()
+        project = super(ProjectManager, self).create(**data)
 
         required_stages = PMStage.objects.filter(required_for_project=True).order_by("pk")
         for stage in required_stages:
@@ -216,6 +215,7 @@ class Project(models.Model):
         if self.fact_start_date:
             year = self.fact_start_date.year
         return year
+
 
 
 class Contract(models.Model):
@@ -390,6 +390,7 @@ class PMStage(models.Model):
     name_ru = models.CharField(max_length=255)
     name_en = models.CharField(max_length=255, null=True)
     required_for_project = models.BooleanField(default=False)
+    final_stage = models.BooleanField(default=False)
 
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
@@ -435,23 +436,36 @@ class ProjectPMStep(models.Model):
             f'project_pm_stage_id: {self.project_pm_stage} - pm_step_id: {self.pm_step} - status_id: {self.status_id}'
 
 
-class ProjectPMStageManager(models.Manager):
-
-    @transaction.atomic
-    def create(self, **data):
-        project_pm_stage = ProjectPMStage(**data)
-        project_pm_stage.save()
-
-        required_steps = PMStep.objects.filter(required_for_stage=project_pm_stage.pm_stage).order_by("pk")
-        for step in required_steps:
-            ProjectPMStep.objects.create(project_pm_stage=project_pm_stage, pm_step=step)
-
-        return project_pm_stage
+# class ProjectPMStageManager(models.Manager):
+#
+#     @transaction.atomic
+#     def create(self, **data):
+#         project_pm_stage = super(ProjectPMStageManager, self).create(**data)
+#         # project_pm_stage.save()
+#
+#         self.update_project_status(project_pm_stage)
+#
+#         required_steps = PMStep.objects.filter(required_for_stage=project_pm_stage.pm_stage).order_by("pk")
+#         for step in required_steps:
+#             ProjectPMStep.objects.create(project_pm_stage=project_pm_stage, pm_step=step)
+#
+#         return project_pm_stage
+#
+#
+#
+#     @staticmethod
+#     def update_project_status(project_pm_stage):
+#         if project_pm_stage.pm_stage.final_stage and project_pm_stage.fact_end_date:
+#             if ProjectStatus.objects.filter(final_status=True).exists():
+#                 project = Project.objects.filter(pk=project_pm_stage.project)
+#                 project.update(
+#                     fact_end_date=project_pm_stage.fact_end_date,
+#                     project_status=ProjectStatus.objects.filter(final_status=True).last(),
+#                 )
 
 
 class ProjectPMStage(models.Model):
 
-    # status_percent = models.DecimalField(null=True, max_digits=17, decimal_places=2)
     ts_start_date = models.DateField(null=True, blank=True)
     ts_end_date = models.DateField(null=True, blank=True)
     rm_start_date = models.DateField(null=True, blank=True)
@@ -470,7 +484,7 @@ class ProjectPMStage(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE, null=False)
     pm_stage = models.ForeignKey('PMStage', on_delete=models.PROTECT, null=False)
 
-    objects = ProjectPMStageManager()
+    # objects = ProjectPMStageManager()
 
     class Meta:
         ordering = ['pm_stage']
@@ -492,6 +506,24 @@ class ProjectPMStage(models.Model):
     def __str__(self):
         return \
             f'pm_stage_id: {self.pm_stage} - project_id: {self.project}'
+
+    @transaction.atomic
+    def save(self, *args, **kwargs):
+        is_new = self._state.adding
+        super(ProjectPMStage, self).save(*args, **kwargs)
+
+        if self.pm_stage.final_stage and self.fact_end_date:
+            if ProjectStatus.objects.filter(final_status=True).exists():
+                project = Project.objects.filter(pk=self.project.pk)
+                project.update(
+                    fact_end_date=self.fact_end_date,
+                    project_status=ProjectStatus.objects.filter(final_status=True).last(),
+                )
+
+        if is_new:
+            required_steps = PMStep.objects.filter(required_for_stage=self.pm_stage).order_by("pk")
+            for step in required_steps:
+                ProjectPMStep.objects.create(project_pm_stage=self, pm_step=step)
 
 
 class LeadStage(models.Model):
