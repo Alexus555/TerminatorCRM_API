@@ -47,7 +47,7 @@ class ClientViewSet(viewsets.ModelViewSet):
 
     filterset_fields = ['name', 'industry']
     search_fields = ['name', 'full_name', 'location', 'phone_number']
-    ordering_fields = ['id', 'name']
+    ordering_fields = ['id', 'name', 'time_create']
     ordering = ['id']
 
 
